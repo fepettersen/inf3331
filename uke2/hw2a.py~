@@ -1,0 +1,11 @@
+import sys
+from math import sin
+
+
+if len(sys.argv) ==1 :
+	print 'Please provide some numbers on the commandline'
+	sys.exit()
+else:
+	print 'Hello, world!'
+	for r in range(len(sys.argv)-1):
+		print 'sin(%g) = %.4f' % (float(sys.argv[r+1]),sin(float(sys.argv[r+1])))

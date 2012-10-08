@@ -1,0 +1,10 @@
+import sys
+import random
+
+a = random.uniform(-1,1)
+print'random number: %.4f' % (a)
+
+'''
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke2$ python printrandom.py 
+random number: 0.6287
+'''
