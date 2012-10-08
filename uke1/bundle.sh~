@@ -1,0 +1,14 @@
+#/bin/sh
+
+s1=$1
+s2=$2
+s=$(find $s1 -name $s2 -print)
+
+for i in $s; do
+	echo "echo unpacking file $i"
+	echo "cat > $i <<EOF"
+	cat $i
+	echo "EOF"
+done
+
+

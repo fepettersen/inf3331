@@ -1,0 +1,15 @@
+#!/bin/bash
+
+trap control_c SIGINT
+
+control_c()
+{
+	echo " done"
+	exit
+}
+
+while :
+	do
+	echo "All work and no play makes Jack a dull boy."
+	sleep 1
+done

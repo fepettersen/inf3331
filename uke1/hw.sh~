@@ -1,0 +1,6 @@
+#!/bin/bash
+r=$1 # store first command-line argument in r
+s=`echo "$r" | bc -l`
+# print to the screen:
+echo "Hello, World! $r=$s"
+
