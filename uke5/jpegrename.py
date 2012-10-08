@@ -1,0 +1,51 @@
+"""
+This file adds an extension 'yyyy_mm_dd_hh_mm_ss_' to a jpg file which does'nt already have this extension. The new extension contains the time and date the picture was taken, but recuires a header with a line which contains this information. Requires the script join.py to be in the same directory.
+"""
+import sys; import re; import os
+import join
+try:
+	somefile = sys.argv[1]
+except:
+	print 'Expected filename of a .jpg file on commandline'
+	sys.exit(1)
+def gettime(somefile):
+	"""
+	extracts the time and date from the header of a .jpg file by
+	finding the line with this info, and extracting it with regular
+	expressions.
+	"""
+	infile = open(somefile,'r')
+	pattern = r''
+	for line in infile:
+		if line.startswith('Date'):
+			temp = line.split()
+	infile.close()
+	timepattern = r'(\d{2}):(\d{2}):(\d{2})'
+	datepattern = r'(\d{4}):(\d{2}):(\d{2})'
+	group1 = re.search(timepattern,temp[-1]).groups()
+	group2 = re.search(datepattern,temp[-2]).groups()
+	return group1, group2
+
+def prefix(time,datfredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke5$ python jpegrename.py tmp2.jpg
+2002_05_19_18_10_03_tmp2.jpg
+e,filename):
+	"""
+	Creates a new file extension if needed. Does not actually
+	rename the file though!
+	"""
+	prefix = filename
+	pattern = r'\d{4}_+\d{2}_+\d{2}_+\d{2}_+\d{2}_+\d{2}_+[img]_+\d+\.[jpg]'
+	match = re.search(pattern,filename)
+	if not match:
+		prefix = join.join('_',date,time,filename)
+	return prefix
+
+tmp,gls =gettime(somefile)
+bla =  prefix(tmp,gls,somefile)
+print bla
+#os.rename(somefile,bla)
+
+'''
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke5$ python jpegrename.py tmp2.jpg
+2002_05_19_18_10_03_tmp2.jpg
+'''

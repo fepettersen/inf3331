@@ -1,0 +1,87 @@
+#!/usr/bin/python
+'''
+This program takes a textfile as input along with a keyword. It will then search through the textfile and count the number of occurances of the keyword. The program call should be as follows:
+$ python count_words.py -i -b <keyword>
+-i means the search will be case-insensitive
+-b means the search will only include the exact word. 
+"eg python count_words.py foot"
+will include "football" in the search, but
+"python count_words.py -i -b foot"
+will not include "football"
+'''
+import argparse
+import re
+parser = argparse.ArgumentParser()
+parser.add_argument("-i",action="store_true") 
+parser.add_argument("-b",action="store_true")
+parser.add_argument("filename", type = str, help="name of file to be searched through")
+parser.add_argument("key",type=str,help="the keyword to search for.")
+args = parser.parse_args()
+w_count = 0
+def default_search(infile,kword):
+	#Case sensitive, keyword can be part of a word
+	counter = 0
+	for line in infile:
+		match = re.findall(kword,line)		
+		if match != None:
+			counter += len(match)
+	return counter
+
+def insensitive_search(infile,kword):
+	#Case insensitive, keyword can be part of another word
+	counter = 0
+	for line in infile:
+		match = re.findall(kword,line,re.IGNORECASE)		
+		if match != None:
+			counter += len(match)
+	return counter
+
+
+def sensitive_search(infile,kword):
+	'''Case sensitive, keyword must stand alone, but can be 	followed by a series of special characters, eg goal?! '''
+	counter = 0
+	pattern1 = r'%s[\.\,\!\:]*\b'%kword
+	for line in infile:
+		match = re.findall(pattern1,line)		
+		if match != None:
+			counter += len(match)	
+	return counter
+
+def complete_search(infile,kword):
+	'''Case insensitive, keyword must stand alone, but can be 		followed by a series of special characters, eg GOAL!! '''
+	counter = 0
+	pattern1 = r'%s[\.\,\!\:]*\b'%kword
+	for line in infile:
+		match = re.findall(pattern1,line,re.IGNORECASE)		
+		if match != None:
+			counter += len(match)	
+	return counter
+
+infile = open(args.filename,'r')
+if args.i and args.b:
+	w_count = complete_search(infile,args.key)
+elif args.i and not args.b:
+	w_count = insensitive_search(infile,args.key)
+elif args.b and not args.i:
+	w_count = sensitive_search(infile,args.key)
+else:
+	w_count = default_search(infile,args.key)
+infile.close()
+print "The word %s is repeated %d times" % (args.key,w_count)
+
+'''
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py -i -b football.txt foot
+The word foot is repeated 0 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py -i football.txt foot
+The word foot is repeated 1 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py -i football.txt goal
+The word goal is repeated 3 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py -b football.txt goal
+The word goal is repeated 1 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py -b -i football.txt goal
+The word goal is repeated 2 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ python count_words.py  football.txt goal
+The word goal is repeated 2 times
+fredrik@fredrik-Aspire-V3-571:~/uio/inf3331/uke4$ 
+
+'''
