@@ -1,0 +1,7 @@
+import sys
+usage = sys.argv[0]
+try:
+	path = sys.argv[1]
+except:
+	print "Invalid usage in ",usage
+	sys.exit()
