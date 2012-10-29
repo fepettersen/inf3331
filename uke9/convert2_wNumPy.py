@@ -20,13 +20,14 @@ ynames = lines[2].split()
 # store y data in a dictionary of lists of floats:
 
 y = {}           # declare empty dictionary
-
+# -------This is edited----------
 # load data from the rest of the lines:
-
 yvalues = loadtxt(infilename,skiprows=3)	#loads the data from file to an array as float. Skips the 3 first rows
-for name in ynames:
+for name in ynames:				# Set 
     y[name] = yvalues[:,0]
 f.close()
+
+#--------This is not edited-----------
 print 'y dictionary:\n', y
 
 # write out 2-column files with t and y[name] for each name:
