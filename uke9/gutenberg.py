@@ -11,7 +11,7 @@ try:
 except:
 	print "Please provide a textfile on the commandline"
 	sys.exit(1)
-	
+
 infile = open(infilename,'r')
 lines = []
 
